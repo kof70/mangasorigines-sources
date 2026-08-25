@@ -4,7 +4,7 @@ Reader extensions for [mangas-origines.fr](https://mangas-origines.fr), for mult
 
 | App | Status | Add source list |
 | --- | --- | --- |
-| [Aidoku](https://aidoku.app) (iOS) | Working | `https://<user>.github.io/mangasorigines-sources/aidoku/index.min.json` |
+| [Aidoku](https://aidoku.app) (iOS) | Working | `https://kof70.github.io/mangasorigines-sources/aidoku/index.min.json` |
 | [Paperback](https://paperback.moe) (iOS) | In progress | — |
 | [Kotatsu](https://kotatsu.app) (Android) | In progress | — |
 
