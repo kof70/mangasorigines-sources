@@ -5,6 +5,7 @@ on:
     paths:
       - 'aidoku/**'
       - 'paperback/**'
+      - 'kotatsu/**'
       - '.github/workflows/build.yml'
   workflow_dispatch:
 
@@ -82,6 +83,42 @@ jobs:
           name: site-paperback
           path: paperback/bundles
           if-no-files-found: ignore
+
+  kotatsu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: android-actions/setup-android@v3
+
+      - name: Cache gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('kotatsu/mangasorigines/**/*.gradle*') }}
+          restore-keys: ${{ runner.os }}-gradle-
+
+      - name: Build debug APK
+        working-directory: kotatsu/mangasorigines
+        run: |
+          chmod +x gradlew
+          ./gradlew :app:assembleDebug --no-daemon
+
+      - name: Publish APK as a release asset
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: kotatsu-latest
+          name: Kotatsu source (latest build)
+          body: Auto-built debug APK for the Kotatsu external source. Sideload and open once to register it with Kotatsu.
+          prerelease: true
+          files: kotatsu/mangasorigines/app/build/outputs/apk/debug/app-debug.apk
 
   deploy:
     needs: [aidoku, paperback]
