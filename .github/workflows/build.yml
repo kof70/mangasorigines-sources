@@ -15,9 +15,6 @@ concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: true
 
-permissions:
-  contents: write
-
 jobs:
   aidoku:
     runs-on: ubuntu-latest
