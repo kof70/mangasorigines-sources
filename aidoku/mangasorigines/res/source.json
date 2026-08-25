@@ -1,0 +1,27 @@
+{
+	"info": {
+		"id": "fr.mangasorigines",
+		"name": "Mangas Origines",
+		"version": 7,
+		"url": "https://mangas-origines.fr",
+		"contentRating": 0,
+		"languages": ["fr"]
+	},
+	"listings": [
+		{
+			"id": "tendance",
+			"name": "Tendance",
+			"kind": "default"
+		},
+		{
+			"id": "populaire",
+			"name": "Populaire",
+			"kind": "default"
+		},
+		{
+			"id": "latest",
+			"name": "Dernières mises à jour",
+			"kind": "default"
+		}
+	]
+}

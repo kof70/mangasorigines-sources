@@ -1,0 +1,109 @@
+name: Build and deploy sources
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'aidoku/**'
+      - 'paperback/**'
+      - '.github/workflows/build.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  aidoku:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            ~/.cargo/bin
+            aidoku/*/target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('aidoku/**/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-cargo-
+
+      # aidoku-rs doesn't publish prebuilt CLI binaries yet, so this always
+      # compiles from source — the cargo cache above keeps repeat runs fast.
+      - name: Install aidoku-cli
+        run: command -v aidoku || cargo install --git https://github.com/Aidoku/aidoku-rs aidoku-cli
+
+      - name: Package each Aidoku source
+        run: |
+          for src in aidoku/*/; do
+            [ -f "$src/Cargo.toml" ] || continue
+            (cd "$src" && aidoku package)
+          done
+
+      - name: Build source list
+        run: aidoku build aidoku/*/package.aix --output public/aidoku
+
+      - name: Upload aidoku site
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-aidoku
+          path: public/aidoku
+
+  # Paperback build runs only once the paperback/ sources exist and declare
+  # their own package.json/tsconfig — see paperback/README.md.
+  paperback:
+    runs-on: ubuntu-latest
+    if: hashFiles('paperback/*/package.json') != ''
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Bundle each Paperback source
+        run: |
+          mkdir -p public/paperback
+          for src in paperback/*/; do
+            [ -f "$src/package.json" ] || continue
+            (cd "$src" && npm install && npx paperback bundle --folder ../../public/paperback)
+          done
+
+      - name: Upload paperback site
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-paperback
+          path: public/paperback
+
+  deploy:
+    needs: [aidoku, paperback]
+    if: always() && needs.aidoku.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download aidoku site
+        uses: actions/download-artifact@v4
+        with:
+          name: site-aidoku
+          path: public/aidoku
+
+      - name: Download paperback site
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: site-paperback
+          path: public/paperback
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4.7.2
+        with:
+          branch: gh-pages
+          folder: public
+          git-config-name: GitHub Actions
+          git-config-email: github-actions[bot]@users.noreply.github.com
+          commit-message: Update source lists
+          single-commit: true
