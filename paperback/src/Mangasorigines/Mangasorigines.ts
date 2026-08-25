@@ -32,7 +32,7 @@ const LISTINGS: Record<string, { title: string; metaKey: string }> = {
 }
 
 export const MangasoriginesInfo: SourceInfo = {
-    version: '1.0.0',
+    version: '1.0.1',
     name: 'Mangas Origines',
     icon: 'icon.png',
     author: 'kof70',
@@ -103,21 +103,24 @@ export class Mangasorigines extends Source {
     // markup: `div.page-item-detail` cards, `h3.h5 > a` for title/link, and a
     // plain `img` for the cover (confirmed via live device logs).
     private async fetchListingPage(metaKey: string, page: number): Promise<PartialSourceManga[]> {
-        const body = new URLSearchParams({
-            action: 'madara_load_more',
-            page: String(page - 1),
-            template: 'madara-core/content/content-archive',
-            'vars[paged]': '1',
-            'vars[orderby]': 'meta_value_num',
-            'vars[template]': 'archive',
-            'vars[sidebar]': 'full',
-            'vars[post_type]': 'wp-manga',
-            'vars[post_status]': 'publish',
-            'vars[meta_key]': metaKey,
-            'vars[order]': 'desc',
-            'vars[meta_query][relation]': 'OR',
-            'vars[manga_archives_item_layout]': 'big_thumbnail',
-        }).toString()
+        // Paperback's JS runtime has no `URLSearchParams` global (it's not a
+        // browser or Node, just an embedded JS engine) — encode by hand.
+        const params: [string, string][] = [
+            ['action', 'madara_load_more'],
+            ['page', String(page - 1)],
+            ['template', 'madara-core/content/content-archive'],
+            ['vars[paged]', '1'],
+            ['vars[orderby]', 'meta_value_num'],
+            ['vars[template]', 'archive'],
+            ['vars[sidebar]', 'full'],
+            ['vars[post_type]', 'wp-manga'],
+            ['vars[post_status]', 'publish'],
+            ['vars[meta_key]', metaKey],
+            ['vars[order]', 'desc'],
+            ['vars[meta_query][relation]', 'OR'],
+            ['vars[manga_archives_item_layout]', 'big_thumbnail'],
+        ]
+        const body = params.map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`).join('&')
 
         const $ = await this.requestHtml(`${BASE_URL}/wp-admin/admin-ajax.php`, {
             method: 'POST',
