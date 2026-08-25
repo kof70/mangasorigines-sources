@@ -104,7 +104,9 @@ jobs:
           path: public/paperback
 
       - name: Add landing page
-        run: cp site/index.html public/index.html
+        run: |
+          cp site/index.html public/index.html
+          cp -r site/assets public/assets
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.7.2

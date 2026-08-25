@@ -39,7 +39,7 @@
     align-items: center;
     gap: 1rem;
   }
-  .card img.icon { width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0; background: #000; object-fit: cover; }
+  .card img.icon { width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0; background: #fff; object-fit: contain; padding: 6px; }
   .card .info { flex: 1; min-width: 0; }
   .card .app-name { font-weight: 600; font-size: 1.05rem; }
   .card .platform { color: var(--muted); font-size: 0.85rem; }
@@ -80,7 +80,7 @@
   <p class="tagline">Extensions de lecture pour <a href="https://mangas-origines.fr">mangas-origines.fr</a>, pour plusieurs apps de lecture de manga.</p>
 
   <div class="card">
-    <img class="icon" src="aidoku/icons/fr.mangasorigines-v8.png" alt="" onerror="this.style.display='none'">
+    <img class="icon" src="assets/aidoku.svg" alt="" onerror="this.style.display='none'">
     <div class="info">
       <div class="app-name">Aidoku <span class="badge ok">OK</span></div>
       <div class="platform">iOS · lecteur de sources</div>
@@ -89,6 +89,7 @@
   </div>
 
   <div class="card">
+    <img class="icon" src="assets/paperback.svg" alt="" onerror="this.style.display='none'">
     <div class="info">
       <div class="app-name">Paperback <span class="badge ok">OK</span></div>
       <div class="platform">iOS · lecteur de sources <span style="opacity:0.7">(pas encore testé sur appareil réel)</span></div>

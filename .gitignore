@@ -6,3 +6,7 @@ public/
 paperback/lib/
 paperback/bundles/
 paperback/tmp/
+local.properties
+kotatsu/mangasorigines/.gradle/
+kotatsu/mangasorigines/app/build/
+kotatsu/mangasorigines/build/
