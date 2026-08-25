@@ -56,9 +56,9 @@ jobs:
 
   # Paperback build runs only once the paperback/ sources exist and declare
   # their own package.json/tsconfig — see paperback/README.md.
+  # No-ops cleanly (empty artifact) until paperback/*/package.json exists.
   paperback:
     runs-on: ubuntu-latest
-    if: hashFiles('paperback/*/package.json') != ''
     steps:
       - uses: actions/checkout@v4
 
@@ -68,6 +68,7 @@ jobs:
 
       - name: Bundle each Paperback source
         run: |
+          shopt -s nullglob
           mkdir -p public/paperback
           for src in paperback/*/; do
             [ -f "$src/package.json" ] || continue
