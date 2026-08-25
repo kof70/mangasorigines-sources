@@ -57,9 +57,10 @@ jobs:
           name: site-aidoku
           path: public/aidoku
 
-  # Paperback build runs only once the paperback/ sources exist and declare
-  # their own package.json/tsconfig — see paperback/README.md.
-  # No-ops cleanly (empty artifact) until paperback/*/package.json exists.
+  # The `paperback` CLI's `bundle` command is opinionated about layout: it
+  # must run from the toolchain project root (where package.json/tsconfig.json
+  # live) and always reads sources from ./src and writes to ./bundles there —
+  # it has no flag to point at an arbitrary output directory.
   paperback:
     runs-on: ubuntu-latest
     steps:
@@ -69,20 +70,18 @@ jobs:
         with:
           node-version: 20
 
-      - name: Bundle each Paperback source
+      - name: Bundle Paperback sources
+        working-directory: paperback
         run: |
-          shopt -s nullglob
-          mkdir -p public/paperback
-          for src in paperback/*/; do
-            [ -f "$src/package.json" ] || continue
-            (cd "$src" && npm install && npx paperback bundle --folder ../../public/paperback)
-          done
+          npm install
+          npx paperback bundle
 
       - name: Upload paperback site
         uses: actions/upload-artifact@v4
         with:
           name: site-paperback
-          path: public/paperback
+          path: paperback/bundles
+          if-no-files-found: ignore
 
   deploy:
     needs: [aidoku, paperback]
