@@ -167,9 +167,19 @@ impl Source for MangasOrigines {
 		_filters: Vec<FilterValue>,
 	) -> Result<MangaPageResult> {
 		match query {
-			Some(q) if !q.is_empty() => {
+			// The `?s=` search page isn't paginated by a URL param (unconfirmed
+			// against the live site either way — Cloudflare blocks direct test
+			// requests from outside a real device). Only ever return page 1's
+			// results; without this, has_next_page would stay true forever
+			// since every page would refetch the same URL and get the same
+			// non-empty result, looping indefinitely.
+			Some(q) if !q.is_empty() && page <= 1 => {
 				parse_catalogue(&format!("{BASE_URL}/catalogues/?s={}", urlencode(&q)))
 			}
+			Some(q) if !q.is_empty() => Ok(MangaPageResult {
+				entries: Vec::new(),
+				has_next_page: false,
+			}),
 			_ => self.get_manga_list(
 				Listing {
 					id: String::from("latest"),
