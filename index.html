@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>mangasorigines-sources</title>
+<meta name="description" content="Extensions de lecture pour mangas-origines.fr — Aidoku, Paperback, Kotatsu.">
+<style>
+  :root {
+    --bg: #0f1115;
+    --card: #171a21;
+    --border: #262b36;
+    --text: #e8eaed;
+    --muted: #9aa1ac;
+    --accent: #ff5c8a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 4rem;
+    line-height: 1.5;
+  }
+  h1 { font-size: 1.9rem; margin-bottom: 0.25rem; }
+  .tagline { color: var(--muted); margin-top: 0; margin-bottom: 2rem; }
+  .tagline a { color: var(--accent); }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.25rem 1.4rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .card img.icon { width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0; background: #fff; object-fit: contain; padding: 6px; }
+  .card .info { flex: 1; min-width: 0; }
+  .card .app-name { font-weight: 600; font-size: 1.05rem; }
+  .card .platform { color: var(--muted); font-size: 0.85rem; }
+  .btn {
+    display: inline-block;
+    padding: 0.55rem 1.1rem;
+    border-radius: 10px;
+    background: var(--accent);
+    color: #1a0510;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .btn.disabled { background: var(--border); color: var(--muted); pointer-events: none; }
+  .url-box { margin-top: 2rem; }
+  .url-box summary { cursor: pointer; color: var(--muted); font-size: 0.85rem; }
+  code {
+    display: block;
+    background: #05060a;
+    border: 1px solid var(--border);
+    padding: 0.6rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    word-break: break-all;
+    margin-top: 0.5rem;
+    color: #c9cdd6;
+  }
+  footer { margin-top: 3rem; color: var(--muted); font-size: 0.85rem; }
+  footer a { color: var(--muted); }
+</style>
+</head>
+<body>
+  <h1>mangasorigines-sources</h1>
+  <p class="tagline">Extensions de lecture pour <a href="https://mangas-origines.fr">mangas-origines.fr</a>, pour plusieurs apps de lecture de manga.</p>
+
+  <div class="card">
+    <img class="icon" src="assets/aidoku.svg" alt="" onerror="this.style.display='none'">
+    <div class="info">
+      <div class="app-name">Aidoku</div>
+      <div class="platform">iOS · lecteur de sources</div>
+    </div>
+    <a class="btn" href="https://aidoku.app/add-source-list/?url=https%3A%2F%2Fkof70.github.io%2Fmangasorigines-sources%2Faidoku%2Findex.min.json">Ajouter</a>
+  </div>
+
+  <div class="card">
+    <img class="icon" src="assets/paperback.svg" alt="" onerror="this.style.display='none'">
+    <div class="info">
+      <div class="app-name">Paperback</div>
+      <div class="platform">iOS · lecteur de sources</div>
+    </div>
+    <a class="btn" href="https://paperback.moe/addRepo/?displayName=Mangas%20Origines&url=https%3A%2F%2Fkof70.github.io%2Fmangasorigines-sources%2Fpaperback">Ajouter</a>
+  </div>
+
+  <div class="card">
+    <div class="info">
+      <div class="app-name">Kotatsu</div>
+      <div class="platform">Android · app compagnon à sideloader (APK) — pas de lien direct possible</div>
+    </div>
+    <a class="btn" href="https://github.com/kof70/mangasorigines-sources/releases/download/kotatsu-latest/app-debug.apk">APK</a>
+  </div>
+
+  <details class="url-box">
+    <summary>Ajouter manuellement (si le bouton ne marche pas)</summary>
+    <p style="color:var(--muted);font-size:0.85rem;margin-bottom:0">Aidoku → Réglages → Listes de sources → coller :</p>
+    <code>https://kof70.github.io/mangasorigines-sources/aidoku/index.min.json</code>
+  </details>
+
+  <div class="card" style="margin-top:2rem">
+    <div class="info">
+      <div class="app-name">Soutenir le projet</div>
+      <div class="platform">Un café pour continuer à maintenir ces sources</div>
+    </div>
+    <!-- Pseudo Buy Me a Coffee pas encore créé : remplacer TON_PSEUDO ci-dessous
+         une fois le compte fait sur buymeacoffee.com, ça active le bouton. -->
+    <a class="btn disabled" href="https://www.buymeacoffee.com/TON_PSEUDO" title="Active-moi en créant un compte sur buymeacoffee.com">☕ Bientôt</a>
+  </div>
+
+  <section style="margin-top:2.5rem">
+    <h2 style="font-size:1.1rem;margin-bottom:0.75rem">Commentaires</h2>
+    <script src="https://giscus.app/client.js"
+      data-repo="kof70/mangasorigines-sources"
+      data-repo-id="R_kgDOUD0Gfw"
+      data-category="Announcements"
+      data-category-id="DIC_kwDOUD0Gf84DEKlf"
+      data-mapping="pathname"
+      data-strict="0"
+      data-reactions-enabled="1"
+      data-emit-metadata="0"
+      data-input-position="top"
+      data-theme="dark_dimmed"
+      data-lang="fr"
+      crossorigin="anonymous"
+      async>
+    </script>
+  </section>
+
+  <footer>
+    <a href="https://github.com/kof70/mangasorigines-sources">Code source sur GitHub</a>
+  </footer>
+</body>
+</html>
