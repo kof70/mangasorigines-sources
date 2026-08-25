@@ -8,9 +8,15 @@ on:
       - '.github/workflows/build.yml'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: true
+
+permissions:
+  contents: write
 
 jobs:
   aidoku:
