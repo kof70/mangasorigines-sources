@@ -3,3 +3,6 @@ target/
 node_modules/
 public/
 .DS_Store
+paperback/lib/
+paperback/bundles/
+paperback/tmp/

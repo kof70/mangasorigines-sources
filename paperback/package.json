@@ -1,0 +1,20 @@
+{
+  "name": "mangasorigines-paperback",
+  "version": "1.0.0",
+  "repositoryName": "Mangas Origines",
+  "description": "Paperback source for mangas-origines.fr",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "npx paperback test",
+    "bundle": "npx paperback bundle",
+    "serve": "npx paperback serve"
+  },
+  "devDependencies": {
+    "typescript": "^4.3.2"
+  },
+  "dependencies": {
+    "@paperback/toolchain": "0.8.0-alpha.47",
+    "@paperback/types": "0.8.0-alpha.47",
+    "cheerio": "1.0.0-rc.12"
+  }
+}
