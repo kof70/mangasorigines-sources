@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Mangas Origines Source</string>
+    <string name="app_name">Mangas Origines</string>
     <string name="source_name">Mangas Origines</string>
     <string name="main_activity_body">This app has nothing to configure — it just exposes mangas-origines.fr to Kotatsu (and compatible forks: Kotatsu-Redo, Futon, Usagi) as an external source.\n\nOpen your reader\'s source catalogue, find "Mangas Origines" under external sources, and enable it. You can close this screen.</string>
 </resources>

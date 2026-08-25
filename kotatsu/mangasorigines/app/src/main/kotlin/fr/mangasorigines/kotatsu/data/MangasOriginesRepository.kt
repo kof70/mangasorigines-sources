@@ -8,6 +8,7 @@ import fr.mangasorigines.kotatsu.core.MangaPage
 import fr.mangasorigines.kotatsu.core.MangaState
 import fr.mangasorigines.kotatsu.core.MangaTag
 import fr.mangasorigines.kotatsu.core.SortOrder
+import fr.mangasorigines.kotatsu.core.stableId
 import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -93,7 +94,7 @@ class MangasOriginesRepository {
             val uploadDate = parseFrenchShortDate(dateText)
 
             MangaChapter(
-                id = (index + 1).toLong(),
+                id = stableId(CHAPTER_ID_TAG, url, slug),
                 name = name,
                 number = number,
                 url = href,
@@ -105,7 +106,7 @@ class MangasOriginesRepository {
         ChapterHolder.put(url, chapters)
 
         return Manga(
-            id = 0L,
+            id = stableId(MANGA_ID_TAG, url),
             title = title,
             url = url,
             publicUrl = "$BASE_URL/oeuvre/$url/",
@@ -129,7 +130,7 @@ class MangasOriginesRepository {
     fun getPages(chapterUrl: String): List<MangaPage> {
         val doc = fetchDocument(chapterUrl)
         return doc.select("div.page-break > img").mapIndexed { index, img ->
-            MangaPage(id = index.toLong(), url = imageUrl(img) ?: "")
+            MangaPage(id = stableId(PAGE_ID_TAG, chapterUrl, index), url = imageUrl(img) ?: "")
         }.filter { it.url.isNotEmpty() }
     }
 
@@ -147,7 +148,7 @@ class MangasOriginesRepository {
         if (slug.isEmpty()) return null
         val title = card.selectFirst(".ori-card-title")?.text().orEmpty()
         val cover = card.selectFirst(".ori-card-cover img")?.let(::imageUrl)
-        return Manga(id = 0L, title = title, url = slug, publicUrl = "$BASE_URL/oeuvre/$slug/", coverUrl = cover)
+        return Manga(id = stableId(MANGA_ID_TAG, slug), title = title, url = slug, publicUrl = "$BASE_URL/oeuvre/$slug/", coverUrl = cover)
     }
 
     /**
@@ -189,7 +190,7 @@ class MangasOriginesRepository {
             val slug = href.trimEnd('/').substringAfterLast('/')
             if (slug.isEmpty()) return@mapNotNull null
             Manga(
-                id = 0L,
+                id = stableId(MANGA_ID_TAG, slug),
                 title = link.text(),
                 url = slug,
                 publicUrl = "$BASE_URL/oeuvre/$slug/",
@@ -225,6 +226,10 @@ class MangasOriginesRepository {
 
         /** Assumed average items-per-AJAX-batch — see the comment on [getList]. */
         const val PAGE_SIZE = 20
+
+        const val MANGA_ID_TAG = "mangasorigines-manga"
+        const val CHAPTER_ID_TAG = "mangasorigines-chapter"
+        const val PAGE_ID_TAG = "mangasorigines-page"
     }
 }
 

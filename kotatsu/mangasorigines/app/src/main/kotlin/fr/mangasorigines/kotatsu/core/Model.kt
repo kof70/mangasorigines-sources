@@ -84,3 +84,23 @@ data class MangaListFilter(
     val states: Set<MangaState> = emptySet(),
     val author: String? = null,
 )
+
+/**
+ * Kotatsu identifies manga, chapters and pages by an opaque [Long], keyed against its own local
+ * favourites/history database — it must stay unique per item and stable across restarts and app
+ * updates. Every call site previously hardcoded `id = 0L`, which collapsed every manga in a
+ * listing into a single entry in Kotatsu's UI (it deduplicates/diffs list items by this id) and
+ * would have corrupted reading history the same way. Ported verbatim from the reference
+ * implementation this source was modeled on (thatagent/kotatsu-suwayomi-source).
+ */
+fun stableId(vararg parts: Any?): Long {
+    var hash = 1125899906842597L
+    for (part in parts) {
+        val value = part?.toString() ?: " "
+        for (char in value) {
+            hash = 31 * hash + char.code
+        }
+        hash = 31 * hash + 0x1F
+    }
+    return hash
+}
